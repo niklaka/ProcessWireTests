@@ -22,7 +22,7 @@ In addition to requirements of ProcessWire itself, the tests need a working inst
 </pre>
 2. Configure PEAR
   * Change "Installation base" (1) to <pre>/usr/local/pear</pre>
-  * Change "Binaries directory" to <pre>/usr/local/bin</pre>
+  * Change "Binaries directory" (4) to <pre>/usr/local/bin</pre>
 
 3. Install PHPUnit using PEAR
 <pre>

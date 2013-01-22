@@ -1,20 +1,20 @@
 <?php
 
-include "./index.php";
+require_once __DIR__ . '/../ProcessWireTestCase.php';
 
 /**
  * Tests for ProcessWire selectors with basic operators.
  *
  */
-class BasicOperatorsTest extends PHPUnit_Framework_TestCase
+class BasicOperatorsTest extends ProcessWireTestCase
 {
 	/**
-	 * Test given selector using database queries.
+	 * Test find() method with given selector using database queries.
 	 *
 	 * @dataProvider provider
 	 *
 	 */
-	public function testSelectorInDatabase($description, $selector, $assertionName, $assertionParams, $skipMessage = '') {
+	public function testFindInDatabase($description, $selector, $assertionName, $assertionParams, $skipMessage = '') {
 		if($skipMessage) $this->markTestSkipped($skipMessage);
 
 		$results = wire('pages')->find("include=all, $selector");
@@ -24,12 +24,12 @@ class BasicOperatorsTest extends PHPUnit_Framework_TestCase
 	}
 
 	/**
-	 * Test given selector using in-memory PageArray.
+	 * Test find() method with given selector using in-memory PageArray.
 	 *
 	 * @dataProvider provider
 	 *
 	 */
-	public function testSelectorInMemory($description, $selector, $assertionName, $assertionParams, $skipMessage = '') {
+	public function testFindInMemory($description, $selector, $assertionName, $assertionParams, $skipMessage = '') {
 		if($skipMessage) $this->markTestSkipped($skipMessage);
 
 		$allPages = wire('pages')->find('include=all');
@@ -183,61 +183,5 @@ class BasicOperatorsTest extends PHPUnit_Framework_TestCase
 				)
 			),
 		));
-	}
-
-	/**
-	 * Helper function to mangle test array resulting in one assertion per test.
-	 *
-	 */
-	protected function _flatten($tests) {
-		$flatTests = array();
-		foreach($tests as $test) {
-			foreach($test[2] as $assertionName => $assertionArgumentArray) {
-				// message, selector, assertion name, assertion args, skip message
-				array_push($flatTests, array($test[0], $test[1], $assertionName, $assertionArgumentArray, $test[3]));
-			}
-		}
-		return $flatTests;
-	}
-
-	/**
-	 *	Custom assertions for running the same assertion for each of the objects.
-	 *	(Exactly speaking not a single assertion anymore.)
-	 *
-	 */
-	public function assertPropertyEqualsForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
-		foreach($actualArrayOfObjects as $actualObject) {
-			$this->assertEquals($expected, $actualObject->$actualPropertyName, $message);
-		}
-	}
-
-	public function assertPropertyNotEqualsForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
-		foreach($actualArrayOfObjects as $actualObject) {
-			$this->assertNotEquals($expected, $actualObject->$actualPropertyName, $message);
-		}
-	}
-
-	public function assertPropertyLessThanForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
-		foreach($actualArrayOfObjects as $actualObject) {
-			$this->assertLessThan($expected, $actualObject->$actualPropertyName, $message);
-		}
-	}
-
-	public function assertPropertyLessThanOrEqualForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
-		foreach($actualArrayOfObjects as $actualObject) {
-			$this->assertLessThanOrEqual($expected, $actualObject->$actualPropertyName, $message);
-		}
-	}
-
-	public function assertPropertyGreaterThanForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
-		foreach($actualArrayOfObjects as $actualObject) {
-			$this->assertGreaterThan($expected, $actualObject->$actualPropertyName, $message);
-		}
-	}
-
-	public function assertPropertyGreaterThanOrEqualForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
-		foreach($actualArrayOfObjects as $actualObject) {
-			$this->assertGreaterThanOrEqual($expected, $actualObject->$actualPropertyName, $message);
-		}
 	}
 }
