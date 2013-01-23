@@ -37,15 +37,13 @@ abstract class ProcessWireTestCase extends PHPUnit_Framework_TestCase {
 		// populate $this->allPages to be able to run in-memory selector tests.
 		// TODO: this belongs to suite-level setup (does not yet exist)
 		if(is_null($this->allPages)) $this->allPages = wire('pages')->find('include=all');
-		
-		echo "SETUP: pages in memory: " . count($this->allPages) . "\n";
-	}	
+	}
 
 	/**
 	 * Wrapper for db selector method calls.
 	 *
 	 * Includes 'include=all' in every selector given to make things match up with in-memory selectors.
-	 * 
+	 *
 	 * TODO: include=all doesn't make sense when testing for include-selectors!
 	 * TODO: make it possible to run tests on single Page-objects as well
 	 *
@@ -60,12 +58,12 @@ abstract class ProcessWireTestCase extends PHPUnit_Framework_TestCase {
 	 * Wrapper for in-memory selector method calls.
 	 *
 	 * @see runMethod() for parameter descriptions
-	 * 
+	 *
 	 */
 	protected function runMethodInMemory($method, $description, $selector, $assertions, $skipMessage) {
 		$this->runMethod($this->allPages, $method, '', $description, $selector, $assertions, $skipMessage);
 	}
-	
+
 	/**
 	 * A convenience method for running different methods of different objects with different selectors and different assertions.
 	 *
@@ -96,14 +94,14 @@ abstract class ProcessWireTestCase extends PHPUnit_Framework_TestCase {
 			call_user_func_array(array($this, $assertionName), $assertionParams);
 		}
 	}
-	
+
 	/**
 	 * Custom assertions for running the same assertion for each of the objects.
 	 * (Exactly speaking not a single assertion anymore then.)
 	 * TODO: see if these could be implemented at a lower level (to make them count as a single assertion)
 	 *
 	 */
- 
+
  	public static function assertPropertyEqualsForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
 		foreach($actualArrayOfObjects as $actualObject) {
 			self::assertEquals($expected, $actualObject->$actualPropertyName, $message);

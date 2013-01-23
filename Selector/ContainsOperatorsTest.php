@@ -38,10 +38,10 @@ class ContainsOperatorsTest extends ProcessWireTestCase
 
 	/**
 	 * Data provider for selector tests using find() method.
-	 * 
+	 *
 	 * Each test is an item in the array, being an array itself
 	 * (items of which represent arguments of the test method, see ProcessWireTestCase for details)
-	 * 
+	 *
 	 */
 	public function providerForFind() {
 		return array(
