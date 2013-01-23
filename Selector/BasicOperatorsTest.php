@@ -3,7 +3,14 @@
 require_once __DIR__ . '/../ProcessWireTestCase.php';
 
 /**
- * Tests for ProcessWire selectors with basic operators.
+ * Tests for ProcessWire selectors with basic operators:
+ *   =   Equal to
+ *   !=  Not equal to
+ *   <   Less than
+ *   >   Greater than
+ *   <=  Less than or equal to
+ *   >=  Greater than or equal to
+ *   and negation of each of the above ("!field OP value")
  *
  */
 class BasicOperatorsTest extends ProcessWireTestCase

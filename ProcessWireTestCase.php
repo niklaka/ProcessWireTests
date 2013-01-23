@@ -46,6 +46,18 @@ abstract class ProcessWireTestCase extends PHPUnit_Framework_TestCase {
 		}
 	}
 
+	public static function assertPropertyContainsForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
+		foreach($actualArrayOfObjects as $actualObject) {
+			self::assertContains($expected, $actualObject->$actualPropertyName, $message);
+		}
+	}
+
+	public static function assertPropertyNotContainsForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
+		foreach($actualArrayOfObjects as $actualObject) {
+			self::assertNotContains($expected, $actualObject->$actualPropertyName, $message);
+		}
+	}
+
 	/**
 	 * Helper function to mangle test array resulting in one assertion per test.
 	 *
