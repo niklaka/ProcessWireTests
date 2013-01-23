@@ -18,55 +18,32 @@ class BasicOperatorsTest extends ProcessWireTestCase
 	/**
 	 * Test find() method with given selector using database queries.
 	 *
-	 * @dataProvider provider
+	 * @dataProvider providerForFind
 	 *
 	 */
-	public function testFindInDatabase($description, $selector, $assertionName, $assertionParams, $skipMessage = '') {
-		if($skipMessage) $this->markTestSkipped($skipMessage);
-
-		$results = wire('pages')->find("include=all, $selector");
-		array_push($assertionParams, $results, $description);
-
-		call_user_func_array(array($this, $assertionName), $assertionParams);
+	public function testFindInDatabase($description, $selector, $assertions, $skipMessage) {
+		$this->runMethodInDatabase('find', $description, $selector, $assertions, $skipMessage);
 	}
 
 	/**
 	 * Test find() method with given selector using in-memory PageArray.
 	 *
-	 * @dataProvider provider
+	 * @dataProvider providerForFind
 	 *
 	 */
-	public function testFindInMemory($description, $selector, $assertionName, $assertionParams, $skipMessage = '') {
-		if($skipMessage) $this->markTestSkipped($skipMessage);
-
-		$allPages = wire('pages')->find('include=all');
-
-		$results = $allPages->find($selector);
-		array_push($assertionParams, $results, $description);
-
-		call_user_func_array(array($this, $assertionName), $assertionParams);
+	public function testFindInMemory($description, $selector, $assertions, $skipMessage) {
+		$this->runMethodInMemory('find', $description, $selector, $assertions, $skipMessage);
 	}
 
 	/**
-	 * Data provider for selector tests.
-	 *
-	 * Each test is an item in the array, being an array itself (items of which represent arguments of the test method):
-	 *   array(
-	 *     'description',
-	 *     'selector string',
-	 *     array(
-	 *       'assertion1' => array('argument1', ...),
-	 *       'assertion2' => array('argument1', ...),
-	 *       ...
-	 *     ),
-	 *     'skip message if test is to be skipped'
-	 *   )
-	 *
-	 * The array is flattened to contain tests with only one assertion to get them all executed.
-	 *
+	 * Data provider for selector tests using find() method.
+	 * 
+	 * Each test is an item in the array, being an array itself
+	 * (items of which represent arguments of the test method, see ProcessWireTestCase for details)
+	 * 
 	 */
-	public function provider() {
-		return $this->_flatten(array(
+	public function providerForFind() {
+		return array(
 			array('Equal to, native field',
 				'template=city',
 				array(
@@ -109,6 +86,7 @@ class BasicOperatorsTest extends ProcessWireTestCase
 				array(
 					'assertCount' => array(69),
 					'assertPropertyEqualsForeach' => array('city', 'template'),
+					// TODO/FIX:
 					// in-memory: 'albuquerqueue' does not match '<string:albuquerque>'
 					//'assertPropertyNotEqualsForeach' => array('albuquerque', 'name')
 				)
@@ -118,6 +96,7 @@ class BasicOperatorsTest extends ProcessWireTestCase
 				array(
 					'assertCount' => array(69),
 					'assertPropertyEqualsForeach' => array('city', 'template'),
+					// TODO/FIX:
 					// in-memory: 'Albuquerqueue' does not match '<string:Albuquerque>'
 					//'assertPropertyNotEqualsForeach' => array('Albuquerque', 'title')
 				)
@@ -189,6 +168,6 @@ class BasicOperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
-		));
+		);
 	}
 }
