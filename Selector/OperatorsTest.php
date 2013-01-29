@@ -22,7 +22,7 @@ require_once __DIR__ . '/../ProcessWireTestCase.php';
  * Focus on covering all the different operators and their basic usage.
  *
  */
-class BasicOperatorsTest extends ProcessWireTestCase
+class OperatorsTest extends ProcessWireTestCase
 {
 	/**
 	 * Test find() method with given selector using database queries.
