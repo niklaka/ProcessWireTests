@@ -3,14 +3,23 @@
 require_once __DIR__ . '/../ProcessWireTestCase.php';
 
 /**
- * Tests for ProcessWire selectors with basic operators:
+ * Tests for ProcessWire selectors with different operators:
  *   =   Equal to
  *   !=  Not equal to
  *   <   Less than
  *   >   Greater than
  *   <=  Less than or equal to
  *   >=  Greater than or equal to
+ *   *=   Contains the exact word or phrase
+ *   ~=   Contains all the words
+ *   ^=   Contains the exact word or phrase at the beginning of the field
+ *   $=   Contains the exact word or phrase at the end of the field
+ *   %=   Contains the exact word or phrase (using slower SQL LIKE)
+ *   %^=  Contains the exact word or phrase at the beginning of the field (using slower SQL LIKE)
+ *   %$=  Contains the exact word or phrase at the end of the field (using slower SQL LIKE)
  *   and negation of each of the above ("!field OP value")
+ *
+ * Focus on covering all the different operators and their basic usage.
  *
  */
 class BasicOperatorsTest extends ProcessWireTestCase
@@ -166,6 +175,34 @@ class BasicOperatorsTest extends ProcessWireTestCase
 					'assertCount' => array(1051),
 					'assertPropertyGreaterThanOrEqualForeach' => array(15, 'floors'),
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
+				)
+			),
+			array('Exact word or phrase (SQL LIKE), native field',
+				'name%=peachtree',
+				array(
+					'assertCount' => array(5),
+					'assertPropertyContainsForeach' => array('peachtree', 'name')
+				)
+			),
+			array('Exact word or phrase (SQL LIKE), custom field',
+				'title%=peachtree',
+				array(
+					'assertCount' => array(5),
+					'assertPropertyContainsForeach' => array('peachtree', 'title')
+				)
+			),
+			array('Negated exact word or phrase (SQL LIKE), native field',
+				'!name%=peachtree',
+				array(
+					'assertCount' => array(1549),
+					'assertPropertyNotContainsForeach' => array('peachtree', 'name')
+				)
+			),
+			array('Negated exact word or phrase (SQL LIKE), custom field',
+				'!title%=peachtree',
+				array(
+					'assertCount' => array(1549),
+					'assertPropertyNotContainsForeach' => array('peachtree', 'title')
 				)
 			),
 		);
