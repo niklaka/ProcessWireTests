@@ -95,9 +95,7 @@ class OperatorsTest extends ProcessWireTestCase
 				array(
 					'assertCount' => array(69),
 					'assertPropertyEqualsForeach' => array('city', 'template'),
-					// TODO/FIX:
-					// in-memory: 'albuquerqueue' does not match '<string:albuquerque>'
-					//'assertPropertyNotEqualsForeach' => array('albuquerque', 'name')
+					'assertPropertyNotRegExpForeach' => array('/^albuquerque$/', 'name')
 				)
 			),
 			array('Negated equal to, custom field',
@@ -105,9 +103,7 @@ class OperatorsTest extends ProcessWireTestCase
 				array(
 					'assertCount' => array(69),
 					'assertPropertyEqualsForeach' => array('city', 'template'),
-					// TODO/FIX:
-					// in-memory: 'Albuquerqueue' does not match '<string:Albuquerque>'
-					//'assertPropertyNotEqualsForeach' => array('Albuquerque', 'title')
+					'assertPropertyNotRegExpForeach' => array('/^Albuquerque$/', 'title')
 				)
 			),
 			array('Not equal to, custom field',
@@ -132,6 +128,9 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
+
+			# TODO: negated less than, native + custom fields
+
 			array('Less than or equal, native field',
 				'parent_id<=4111',
 				array(
@@ -147,6 +146,9 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
+
+			# TODO: negated less than or equal, native + custom fields
+
 			array('Greater than, native field',
 				'parent_id>4111',
 				array(
@@ -162,6 +164,9 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
+
+			# TODO: negated greater than, native + custom fields
+
 			array('Greater than or equal, native field',
 				'parent_id>=4111',
 				array(
@@ -177,6 +182,9 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
+
+			# TODO: negated greater than or equal, native + custom fields
+
 			array('Exact word or phrase (SQL LIKE), native field',
 				'name%=peachtree',
 				array(
@@ -205,6 +213,97 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyNotContainsForeach' => array('peachtree', 'title')
 				)
 			),
+			array('Exact word or phrase (fulltext), native field',
+				'name*=peachtree',
+				array(
+					'assertCount' => array(5),
+					'assertPropertyContainsForeach' => array('peachtree', 'name')
+				)
+			),
+			array('Exact word or phrase (fulltext), custom field',
+				'title*=peachtree',
+				array(
+					'assertCount' => array(5),
+					'assertPropertyContainsForeach' => array('peachtree', 'title')
+				)
+			),
+			array('Negated exact word or phrase (fulltext), native field',
+				'!name*=peachtree',
+				array(
+					'assertCount' => array(1549),
+					'assertPropertyNotContainsForeach' => array('peachtree', 'name')
+				)
+			),
+			array('Negated exact word or phrase (fulltext), custom field',
+				'!title*=peachtree',
+				array(
+					'assertCount' => array(1549),
+					'assertPropertyNotContainsForeach' => array('peachtree', 'title')
+				)
+			),
+			array('All words (fulltext), native field',
+				'name~=tower south',
+				array(
+					'assertCount' => array(5),
+					'assertPropertyContainsForeach' => array('tower', 'name'),
+					'assertPropertyContainsForeach' => array('south', 'name')
+				)
+			),
+			array('All words (fulltext), custom field',
+				'body~=adipiscing sollicitudin suspendisse',
+				array(
+					'assertCount' => array(236),
+					'assertPropertyContainsForeach' => array('adipiscing', 'body'),
+					'assertPropertyContainsForeach' => array('sollicitudin', 'body'),
+					'assertPropertyContainsForeach' => array('suspendisse', 'body')
+				)
+			),
+			array('Negated all words (fulltext), native field',
+				'!name~=tower south',
+				array(
+					'assertCount' => array(1549),
+					'assertPropertyNotContainsForeach' => array('tower', 'name'),
+					'assertPropertyNotContainsForeach' => array('south', 'name')
+				)
+			),
+			array('Negated all words (fulltext), custom field',
+				'!body~=adipiscing sollicitudin suspendisse',
+				array(
+					'assertCount' => array(1318),
+					'assertPropertyNotContainsForeach' => array('adipiscing', 'body'),
+					'assertPropertyNotContainsForeach' => array('sollicitudin', 'body'),
+					'assertPropertyNotContainsForeach' => array('suspendisse', 'body')
+				)
+			),
+			array('Exact word or phrase at the beginning of the field, native field',
+				'name^=world',
+				array(
+					'assertCount' => array(5),
+					'assertPropertyRegExpForeach' => array('/^world/', 'name')
+				)
+			),
+			array('Exact word or phrase at the beginning of the field, custom field',
+				'title^=one',
+				array(
+					'assertCount' => array(70),
+					'assertPropertyRegExpForeach' => array('/^one/i', 'title')
+				)
+			),
+			array('Negated exact word or phrase at the beginning of the field, native field',
+				'!name^=world',
+				array(
+					'assertCount' => array(1549),
+					'assertPropertyNotRegExpForeach' => array('/^world/', 'name')
+				)
+			),
+			array('Negated exact word or phrase at the beginning of the field, custom field',
+				'!title^=one',
+				array(
+					'assertCount' => array(1484),
+					'assertPropertyNotRegExpForeach' => array('/^one/i', 'title')
+				)
+			),
+			
 		);
 	}
 }
