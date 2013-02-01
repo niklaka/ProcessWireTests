@@ -1,5 +1,8 @@
 <?php
 
+// make sure all errors get reported regardless of what ini-files might contain
+error_reporting(E_ALL | E_STRICT);
+
 include './index.php';
 
 /**

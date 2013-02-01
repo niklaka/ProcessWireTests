@@ -16,7 +16,7 @@ class SubfieldTest extends ProcessWireTestCase
 	 * @dataProvider providerForFind
 	 *
 	 */
-	public function testFindInDatabase($description, $selector, $assertions, $skipMessage) {
+	public function testFindInDatabase($description, $selector, $assertions, $skipMessage = '') {
 		$this->runMethodInDatabase('find', $description, $selector, $assertions, $skipMessage);
 	}
 
@@ -26,7 +26,7 @@ class SubfieldTest extends ProcessWireTestCase
 	 * @dataProvider providerForFind
 	 *
 	 */
-	public function testFindInMemory($description, $selector, $assertions, $skipMessage) {
+	public function testFindInMemory($description, $selector, $assertions, $skipMessage = '') {
 		$this->runMethodInMemory('find', $description, $selector, $assertions, $skipMessage);
 	}
 
