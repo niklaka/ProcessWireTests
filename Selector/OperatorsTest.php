@@ -15,8 +15,6 @@ require_once __DIR__ . '/../ProcessWireTestCase.php';
  *   ^=   Contains the exact word or phrase at the beginning of the field
  *   $=   Contains the exact word or phrase at the end of the field
  *   %=   Contains the exact word or phrase (using slower SQL LIKE)
- *   %^=  Contains the exact word or phrase at the beginning of the field (using slower SQL LIKE)
- *   %$=  Contains the exact word or phrase at the end of the field (using slower SQL LIKE)
  *   and negation of each of the above ("!field OP value")
  *
  * Focus on covering all the different operators and their basic usage.
@@ -303,7 +301,7 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyNotRegExpForeach' => array('/^one/i', 'title')
 				)
 			),
-			
+
 		);
 	}
 }
