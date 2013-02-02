@@ -126,9 +126,21 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
-
-			# TODO: negated less than, native + custom fields
-
+			array('Negated less than, native field',
+				'!parent_id<4111',
+				array(
+					'assertCount' => array(1440),
+					'assertPropertyGreaterThanOrEqualForeach' => array(4111, 'parent_id')
+				)
+			),
+			array('Negated less than, custom field',
+				'template=skyscraper, !floors<5',
+				array(
+					'assertCount' => array(1172),
+					'assertPropertyMoreThanOrEqualForeach' => array(5, 'floors'),
+					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
+				)
+			),
 			array('Less than or equal, native field',
 				'parent_id<=4111',
 				array(
@@ -144,9 +156,21 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
-
-			# TODO: negated less than or equal, native + custom fields
-
+			array('Negated less than or equal, native field',
+				'!parent_id<=4111',
+				array(
+					'assertCount' => array(1231),
+					'assertPropertyGreaterThanForeach' => array(4111, 'parent_id'),
+				)
+			),
+			array('Negated less than or equal, custom field',
+				'template=skyscraper, !floors<=5',
+				array(
+					'assertCount' => array(1167),
+					'assertPropertyGreaterThanForeach' => array(5, 'floors'),
+					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
+				)
+			),
 			array('Greater than, native field',
 				'parent_id>4111',
 				array(
@@ -162,9 +186,21 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
-
-			# TODO: negated greater than, native + custom fields
-
+			array('Negated greater than, native field',
+				'!parent_id>4111',
+				array(
+					'assertCount' => array(323),
+					'assertPropertyLessThanOrEqualForeach' => array(4111, 'parent_id')
+				)
+			),
+			array('Negated greater than, custom field',
+				'template=skyscraper, !floors>15',
+				array(
+					'assertCount' => array(199),
+					'assertPropertyLessThanOrEqualForeach' => array(15, 'floors'),
+					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
+				)
+			),
 			array('Greater than or equal, native field',
 				'parent_id>=4111',
 				array(
@@ -180,9 +216,21 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
-
-			# TODO: negated greater than or equal, native + custom fields
-
+			array('Negated greater than or equal, native field',
+				'!parent_id>=4111',
+				array(
+					'assertCount' => array(114),
+					'assertPropertyLessThanForeach' => array(4111, 'parent_id'),
+				)
+			),
+			array('Negated greater than or equal, custom field',
+				'template=skyscraper, !floors>=15',
+				array(
+					'assertCount' => array(181),
+					'assertPropertyLessThanForeach' => array(15, 'floors'),
+					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
+				)
+			),
 			array('Exact word or phrase (SQL LIKE), native field',
 				'name%=peachtree',
 				array(
