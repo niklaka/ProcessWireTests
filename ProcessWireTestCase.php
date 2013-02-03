@@ -93,7 +93,8 @@ abstract class ProcessWireTestCase extends PHPUnit_Framework_TestCase {
 			// add run-time parameters for the assertion (actual result and message)
 			array_push($assertionParams, $results, $description);
 
-			// call the assertion method
+			// call the assertion method (or throw an exeception if such a method does not exist)
+			if(!method_exists($this, $assertionName)) throw new Exception("No such assertion: $assertionName");
 			call_user_func_array(array($this, $assertionName), $assertionParams);
 		}
 	}
@@ -144,14 +145,43 @@ abstract class ProcessWireTestCase extends PHPUnit_Framework_TestCase {
 	// case in-sensitive!
 	public static function assertPropertyContainsForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
 		foreach($actualArrayOfObjects as $actualObject) {
-			self::assertContains(strtolower($expected), strtolower($actualObject->$actualPropertyName), $message);
+			self::assertContains($expected, (string)$actualObject->$actualPropertyName, $message, TRUE);
 		}
 	}
 
 	// case in-sensitive!
 	public static function assertPropertyNotContainsForeach($expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
 		foreach($actualArrayOfObjects as $actualObject) {
-			self::assertNotContains(strtolower($expected), strtolower($actualObject->$actualPropertyName), $message);
+			self::assertNotContains($expected, (string)$actualObject->$actualPropertyName, $message, TRUE);
+		}
+	}
+
+	/**
+	 * Assertion to match all given *whole words* within a string (a given property for all given objects).
+	 * Case insensitive.
+	 *
+	 */
+	public static function assertPropertyContainsAllWordsForeach(array $expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
+		$constraints = array();
+		foreach($expected as $str) $constraints[] = self::matchesRegularExpression("/\b$str\b/i");
+
+		foreach($actualArrayOfObjects as $actualObject) {
+			self::assertThat(
+				(string)$actualObject->$actualPropertyName,
+				call_user_func_array('self::logicalAnd', $constraints)
+			);
+		}
+	}
+
+	public static function assertPropertyNotContainsAllWordsForeach(array $expected, $actualPropertyName, $actualArrayOfObjects, $message = '') {
+		$constraints = array();
+		foreach($expected as $str) $constraints[] = self::matchesRegularExpression("/\b$str\b/i");
+
+		foreach($actualArrayOfObjects as $actualObject) {
+			self::assertThat(
+				(string)$actualObject->$actualPropertyName,
+				self::logicalNot(call_user_func_array('self::logicalAnd', $constraints))
+			);
 		}
 	}
 
