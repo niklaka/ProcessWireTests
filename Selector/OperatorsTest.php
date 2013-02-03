@@ -137,7 +137,7 @@ class OperatorsTest extends ProcessWireTestCase
 				'template=skyscraper, !floors<5',
 				array(
 					'assertCount' => array(1172),
-					'assertPropertyMoreThanOrEqualForeach' => array(5, 'floors'),
+					'assertPropertyGreaterThanOrEqualForeach' => array(5, 'floors'),
 					'assertPropertyEqualsForeach' => array('skyscraper', 'template')
 				)
 			),
@@ -290,7 +290,7 @@ class OperatorsTest extends ProcessWireTestCase
 			array('All words (fulltext), native field',
 				'name~=tower south',
 				array(
-					'assertCount' => array(5),
+					'assertCount' => array(4),
 					'assertPropertyContainsForeach' => array('tower', 'name'),
 					'assertPropertyContainsForeach' => array('south', 'name')
 				)
@@ -307,18 +307,15 @@ class OperatorsTest extends ProcessWireTestCase
 			array('Negated all words (fulltext), native field',
 				'!name~=tower south',
 				array(
-					'assertCount' => array(1549),
-					'assertPropertyNotContainsForeach' => array('tower', 'name'),
-					'assertPropertyNotContainsForeach' => array('south', 'name')
+					'assertCount' => array(1550),
+					'assertPropertyNotContainsAllWordsForeach' => array(array('tower', 'south'), 'name'),
 				)
 			),
 			array('Negated all words (fulltext), custom field',
 				'!body~=adipiscing sollicitudin suspendisse',
 				array(
 					'assertCount' => array(1318),
-					'assertPropertyNotContainsForeach' => array('adipiscing', 'body'),
-					'assertPropertyNotContainsForeach' => array('sollicitudin', 'body'),
-					'assertPropertyNotContainsForeach' => array('suspendisse', 'body')
+					'assertPropertyNotContainsAllWordsForeach' => array(array('adipiscing', 'sollicitudin', 'suspendisse'), 'body'),
 				)
 			),
 			array('Exact word or phrase at the beginning of the field, native field',
