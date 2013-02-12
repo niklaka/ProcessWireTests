@@ -346,6 +346,18 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertPropertyNotRegExpForeach' => array('/^one/i', 'title')
 				)
 			),
+			array('Equal to AND not equal to, multiple page references',
+				'architects=4174, architects!=4178',
+				array(
+					'assertCount' => array(4)
+				)
+			),
+			array('Equal to AND not equal to, multiple page references + subfield',
+				'architects.title=Philip Johnson, architects.title!=John Burgee',
+				array(
+					'assertCount' => array(4)
+				)
+			),
 
 		);
 	}
