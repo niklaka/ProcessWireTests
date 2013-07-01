@@ -358,7 +358,12 @@ class OperatorsTest extends ProcessWireTestCase
 					'assertCount' => array(4)
 				)
 			),
-
+			array('One field or another is empty',
+				'template=skyscraper, height|floors=0',
+				array(
+					'assertCount' => array(164)
+				)
+			)
 		);
 	}
 }
